@@ -19,7 +19,7 @@ export const AboutHero = () => {
             <div className="w-64 h-64 relative">
               <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full animate-pulse"></div>
               <img 
-                src="https://res.cloudinary.com/dwbe8zbpn/image/upload/v1734043831/steven_hbvmwi.jpg"
+                src="https://res.cloudinary.com/dwbe8zbpn/image/upload/v1734044211/steven_vsaler.png"
                 alt="Tu foto profesional"
                 className="absolute  inset-2 object-contain w-full h-full rounded-full border-4 border-white shadow-xl"
               />

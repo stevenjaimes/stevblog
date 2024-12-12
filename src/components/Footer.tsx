@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom';
+import logo from '../assets/logo.png';
+
 
 export const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -40,7 +42,7 @@ export const Footer = () => {
           {/* Columna 1: Logo y descripción */}
           <div className="space-y-4">
             <Link to="/" className="flex items-center space-x-2">
-              <img src="/logo.png" alt="stevdevblog Logo" className="h-8 w-8" />
+              <img src={logo} className="h-12 w-12" />
               <span className="text-white text-xl font-bold">stevdevblog</span>
             </Link>
             <p className="text-gray-200">
