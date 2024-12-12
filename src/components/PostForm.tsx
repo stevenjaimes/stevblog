@@ -1,26 +1,27 @@
 import { useState } from 'react';
-import { Post } from '../types/Post';
+import { useCategories } from '../hooks/useCategories';
 import { postService } from '../services/posts';
 
-// Interfaz para el formulario (omitimos el id ya que Supabase lo genera)
 interface PostFormData {
   title: string;
   excerpt: string;
   content: string;
-  imageUrl: string;
+  image_url: string; // Ajustado para coincidir con el backend
   author: string;
   tags: string[];
-  readTime: string;
+  read_time: string;
+  category_slug: string;
 }
 
 const initialFormData: PostFormData = {
   title: '',
   excerpt: '',
   content: '',
-  imageUrl: '',
+  image_url: '', // Ajustado para coincidir con el backend
   author: '',
   tags: [],
-  readTime: ''
+  read_time: '',
+  category_slug: '', // Inicializamos como vacío
 };
 
 interface PostFormProps {
@@ -28,15 +29,16 @@ interface PostFormProps {
 }
 
 export const PostForm = ({ onSubmitSuccess }: PostFormProps) => {
+  const { categories, loading, error: categoryError } = useCategories(); // Usamos el hook para obtener las categorías
   const [formData, setFormData] = useState<PostFormData>(initialFormData);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -44,7 +46,7 @@ export const PostForm = ({ onSubmitSuccess }: PostFormProps) => {
     const tags = e.target.value.split(',').map(tag => tag.trim());
     setFormData(prev => ({
       ...prev,
-      tags
+      tags,
     }));
   };
 
@@ -56,7 +58,7 @@ export const PostForm = ({ onSubmitSuccess }: PostFormProps) => {
     try {
       const newPost = {
         ...formData,
-        date: new Date().toISOString()
+        date: new Date().toISOString(),
       };
 
       await postService.createPost(newPost);
@@ -69,6 +71,9 @@ export const PostForm = ({ onSubmitSuccess }: PostFormProps) => {
     }
   };
 
+  if (loading) return <p>Cargando categorías...</p>; // Muestra un mensaje de carga
+  if (categoryError) return <p>Error al cargar categorías: {categoryError}</p>; // Muestra el error
+
   return (
     <form onSubmit={handleSubmit} className="space-y-6 bg-white p-6 rounded-lg shadow-md">
       {error && (
@@ -77,6 +82,7 @@ export const PostForm = ({ onSubmitSuccess }: PostFormProps) => {
         </div>
       )}
 
+      {/* Título */}
       <div>
         <label htmlFor="title" className="block text-sm font-medium text-gray-700">
           Título
@@ -92,6 +98,7 @@ export const PostForm = ({ onSubmitSuccess }: PostFormProps) => {
         />
       </div>
 
+      {/* Extracto */}
       <div>
         <label htmlFor="excerpt" className="block text-sm font-medium text-gray-700">
           Extracto
@@ -107,6 +114,7 @@ export const PostForm = ({ onSubmitSuccess }: PostFormProps) => {
         />
       </div>
 
+      {/* Contenido */}
       <div>
         <label htmlFor="content" className="block text-sm font-medium text-gray-700">
           Contenido
@@ -122,21 +130,23 @@ export const PostForm = ({ onSubmitSuccess }: PostFormProps) => {
         />
       </div>
 
+      {/* URL de la imagen */}
       <div>
-        <label htmlFor="imageUrl" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="image_url" className="block text-sm font-medium text-gray-700">
           URL de la imagen
         </label>
         <input
           type="url"
-          id="imageUrl"
-          name="imageUrl"
-          value={formData.imageUrl}
+          id="image_url"
+          name="image_url"
+          value={formData.image_url}
           onChange={handleChange}
           required
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
         />
       </div>
 
+      {/* Autor */}
       <div>
         <label htmlFor="author" className="block text-sm font-medium text-gray-700">
           Autor
@@ -152,6 +162,7 @@ export const PostForm = ({ onSubmitSuccess }: PostFormProps) => {
         />
       </div>
 
+      {/* Tags */}
       <div>
         <label htmlFor="tags" className="block text-sm font-medium text-gray-700">
           Tags (separados por coma)
@@ -167,15 +178,16 @@ export const PostForm = ({ onSubmitSuccess }: PostFormProps) => {
         />
       </div>
 
+      {/* Tiempo de lectura */}
       <div>
-        <label htmlFor="readTime" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="read_time" className="block text-sm font-medium text-gray-700">
           Tiempo de lectura
         </label>
         <input
           type="text"
-          id="readTime"
-          name="readTime"
-          value={formData.readTime}
+          id="read_time"
+          name="read_time"
+          value={formData.read_time}
           onChange={handleChange}
           placeholder="5 min"
           required
@@ -183,14 +195,35 @@ export const PostForm = ({ onSubmitSuccess }: PostFormProps) => {
         />
       </div>
 
+      {/* Categoría */}
+      <div>
+        <label htmlFor="category_slug" className="block text-sm font-medium text-gray-700">
+          Categoría
+        </label>
+        <select
+          id="category_slug"
+          name="category_slug"
+          value={formData.category_slug}
+          onChange={handleChange}
+          required
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
+        >
+          <option value="">Selecciona una categoría</option>
+          {categories.map(category => (
+            <option key={category.id} value={category.slug}>
+              {category.name}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* Botón de envío */}
       <div className="flex justify-end">
         <button
           type="submit"
           disabled={isSubmitting}
           className={`px-4 py-2 rounded-md text-white font-medium ${
-            isSubmitting
-              ? 'bg-purple-400 cursor-not-allowed'
-              : 'bg-purple-600 hover:bg-purple-700'
+            isSubmitting ? 'bg-purple-400 cursor-not-allowed' : 'bg-purple-600 hover:bg-purple-700'
           }`}
         >
           {isSubmitting ? 'Creando...' : 'Crear Post'}
