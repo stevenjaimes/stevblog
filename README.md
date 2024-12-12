@@ -44,32 +44,46 @@ Estas tablas pueden ser creadas desde el panel de administración de Supabase, o
 
 ```sql
 -- Crear tabla de Posts
-create table posts (
-  id serial primary key,
-  title text not null,
-  content text not null,
-  created_at timestamp with time zone default now()
+CREATE TABLE posts (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    title VARCHAR(255) NOT NULL,
+    content TEXT NOT NULL,
+    excerpt TEXT,
+    image_url TEXT,
+    date TIMESTAMP NOT NULL DEFAULT NOW(),
+    author VARCHAR(255),
+    tags TEXT[], -- Lista de etiquetas como arreglo de texto
+    read_time VARCHAR(50),
+    category_slug VARCHAR(255),
+    FOREIGN KEY (category_slug) REFERENCES categories(slug) ON DELETE SET NULL
 );
 
 -- Crear tabla de Categories
-create table categories (
-  id serial primary key,
-  name text not null
+CREATE TABLE categories (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name VARCHAR(255) NOT NULL,
+    slug VARCHAR(255) UNIQUE NOT NULL,
+    description TEXT,
+    color VARCHAR(7) -- Código de color hexadecimal (por ejemplo, #FFFFFF)
 );
 
 -- Crear tabla de Comments
-create table comments (
-  id serial primary key,
-  post_id integer references posts(id),
-  content text not null,
-  created_at timestamp with time zone default now()
+CREATE TABLE comments (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    content TEXT NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    author_email VARCHAR(255) NOT NULL,
+    user_id UUID,
+    parent_id UUID REFERENCES comments(id) ON DELETE SET NULL,
+    replies_count INT DEFAULT 0
 );
 
 -- Crear tabla de Profiles
-create table profiles (
-  id serial primary key,
-  username text not null unique,
-  bio text
+CREATE TABLE profiles (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(), -- ID único para el perfil
+    role VARCHAR(50) NOT NULL DEFAULT 'user', -- Rol del usuario (por defecto 'user')
+    created_at TIMESTAMP NOT NULL DEFAULT NOW(), -- Fecha de creación del perfil
+    updated_at TIMESTAMP NOT NULL DEFAULT NOW() -- Última actualización del perfil
 );
 ```
 
