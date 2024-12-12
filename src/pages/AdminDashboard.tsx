@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { usePosts } from '../hooks/usePosts';
+import { useCategories } from '../hooks/useCategories'; // Importar el hook useCategories
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -10,10 +11,18 @@ export const AdminDashboard = () => {
   const [imageUrl, setImageUrl] = useState('');
   const [tags, setTags] = useState<string[]>([]);
   const [readTime, setReadTime] = useState('');
+  const [categoryId, setCategoryId] = useState(''); // Estado para la categoría seleccionada
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { user } = useAuth();
   const { mutate } = usePosts();
+  const { categories, loading, error: categoryError } = useCategories(); // Obtener categorías
+
+  useEffect(() => {
+    if (categories.length > 0) {
+      setCategoryId(categories[0].id); // Establecer la primera categoría como predeterminada si es necesario
+    }
+  }, [categories]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,20 +30,19 @@ export const AdminDashboard = () => {
     setError(null);
 
     try {
-      const { data, error: supabaseError } = await supabase
+      const { error: supabaseError } = await supabase
         .from('posts')
-        .insert([
-          {
-            title,
-            content,
-            excerpt,
-            image_url: imageUrl,
-            author: user?.email,
-            tags,
-            read_time: readTime,
-            date: new Date().toISOString(),
-          },
-        ])
+        .insert([{
+          title,
+          content,
+          excerpt,
+          image_url: imageUrl,
+          author: user?.email,
+          tags,
+          read_time: readTime,
+          date: new Date().toISOString(),
+          category_ids: [categoryId], // Insertar la categoría seleccionada
+        }])
         .select()
         .single();
 
@@ -47,6 +55,7 @@ export const AdminDashboard = () => {
       setImageUrl('');
       setTags([]);
       setReadTime('');
+      setCategoryId(''); // Limpiar la categoría seleccionada
 
       // Actualizar la lista de posts
       mutate();
@@ -63,6 +72,9 @@ export const AdminDashboard = () => {
     const tagArray = e.target.value.split(',').map(tag => tag.trim());
     setTags(tagArray);
   };
+
+  if (loading) return <p>Cargando categorías...</p>;
+  if (categoryError) return <p>Error al cargar categorías: {categoryError}</p>;
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
@@ -160,6 +172,26 @@ export const AdminDashboard = () => {
                 required
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
               />
+            </div>
+
+            {/* Dropdown para seleccionar la categoría */}
+            <div>
+              <label htmlFor="categoryId" className="block text-sm font-medium text-gray-700">
+                Categoría
+              </label>
+              <select
+                id="categoryId"
+                value={categoryId}
+                onChange={(e) => setCategoryId(e.target.value)}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
+                required
+              >
+                {categories.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div className="flex justify-end">
