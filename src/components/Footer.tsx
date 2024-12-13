@@ -117,7 +117,7 @@ export const Footer = () => {
                 Política de Privacidad
               </Link>
               <Link
-                to="/terminos"
+                to="/terminosdeuso"
                 className="text-gray-200 hover:text-white text-sm transition-colors"
               >
                 Términos de Uso

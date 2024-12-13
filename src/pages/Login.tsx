@@ -30,10 +30,14 @@ export const Login = () => {
     try {
         await loginWithGoogle();
         // Redirigir o hacer algo después del inicio de sesión exitoso
-    } catch (error) {
-        setError(error.message);
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+            console.error(error.message); // Now TypeScript knows 'error' is an instance of Error
+        } else {
+            console.error("An unknown error occurred");
+        }
     }
-};
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">

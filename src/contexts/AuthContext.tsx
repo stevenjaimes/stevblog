@@ -9,6 +9,7 @@ interface AuthContextType {
   loading: boolean;
   signIn: (email: string, password: string) => Promise<{ error: AuthError | null }>;
   signOut: () => Promise<void>;
+  loginWithGoogle: () => Promise<User>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
