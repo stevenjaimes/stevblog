@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { User, AuthError } from '@supabase/supabase-js';
 import { supabase } from '../lib/supabase';
 
+
 interface AuthContextType {
   user: User | null;
   isAdmin: boolean;
@@ -70,12 +71,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     await supabase.auth.signOut();
   };
 
+  const loginWithGoogle = async () => {
+    const { data, error } = await supabase.auth.signInWithOAuth({ provider: 'google' });
+    if (error) throw Error ("Ha ocurrido un error durante la autenticación con Google");
+    return data;
+};
+
   const value = {
     user,
     isAdmin,
     loading,
     signIn,
     signOut,
+    loginWithGoogle
   };
 
   return (

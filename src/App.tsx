@@ -11,6 +11,8 @@ import { Login } from './pages/Login';
 import { SignUp } from './pages/SignUp';
 import { AdminDashboard } from './pages/AdminDashboard';
 import './App.css';
+import ScrollToTop from './components/ScrollToTop';
+import PrivacyPolicy from './pages/PrivacyPolicy';
 
 function App() {
   return (
@@ -19,6 +21,7 @@ function App() {
         <div className="flex flex-col min-h-screen">
           <Header />
           <main className="flex-grow pt-16">
+            <ScrollToTop />
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/blog" element={<Blog />} />
@@ -27,6 +30,7 @@ function App() {
               <Route path="/post/:id" element={<PostDetail />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<SignUp />} />
+              <Route path="/privacypolicy" element ={<PrivacyPolicy />} />
               <Route
                 path="/admin"
                 element={

@@ -8,7 +8,7 @@ export const Login = () => {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const { signIn } = useAuth();
+  const { signIn, loginWithGoogle } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,6 +25,15 @@ export const Login = () => {
       setIsLoading(false);
     }
   };
+
+  const handleGoogleLogin = async () => {
+    try {
+        await loginWithGoogle();
+        // Redirigir o hacer algo después del inicio de sesión exitoso
+    } catch (error) {
+        setError(error.message);
+    }
+};
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -99,6 +108,7 @@ export const Login = () => {
               </button>
             </div>
           </form>
+          <button onClick={handleGoogleLogin}>Iniciar sesión con Google</button>
         </div>
       </div>
     </div>

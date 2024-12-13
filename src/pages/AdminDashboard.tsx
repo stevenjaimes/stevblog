@@ -41,7 +41,7 @@ export const AdminDashboard = () => {
           tags,
           read_time: readTime,
           date: new Date().toISOString(),
-          category_ids: [categoryId], // Insertar la categoría seleccionada
+          category_slug: categoryId, // Insertar la categoría seleccionada
         }])
         .select()
         .single();

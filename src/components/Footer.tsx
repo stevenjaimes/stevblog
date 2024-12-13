@@ -65,7 +65,7 @@ export const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/acerca-de" className="text-gray-200 hover:text-white transition-colors">
+                <Link to="/about" className="text-gray-200 hover:text-white transition-colors">
                   Acerca de
                 </Link>
               </li>
@@ -111,7 +111,7 @@ export const Footer = () => {
             </p>
             <div className="flex space-x-4 mt-4 md:mt-0">
               <Link
-                to="/privacidad"
+                to="/privacypolicy"
                 className="text-gray-200 hover:text-white text-sm transition-colors"
               >
                 Política de Privacidad
