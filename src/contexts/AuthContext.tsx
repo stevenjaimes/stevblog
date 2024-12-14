@@ -76,10 +76,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const loginWithGoogle = async (): Promise<string | null> => {
     // Iniciar el flujo de OAuth con Google
     const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: 'http://localhost:5173',
-      },
+      provider: 'google'
     });
   
     if (error) {
