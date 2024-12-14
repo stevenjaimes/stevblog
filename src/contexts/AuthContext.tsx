@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { User, AuthError } from '@supabase/supabase-js';
 import { supabase } from '../lib/supabase';
+import { redirect } from 'react-router-dom';
 
 
 interface AuthContextType {
@@ -9,7 +10,7 @@ interface AuthContextType {
   loading: boolean;
   signIn: (email: string, password: string) => Promise<{ error: AuthError | null }>;
   signOut: () => Promise<void>;
-  loginWithGoogle: () => Promise<User>;
+  loginWithGoogle: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -73,10 +74,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const loginWithGoogle = async () => {
-    const { data, error } = await supabase.auth.signInWithOAuth({ provider: 'google' });
-    if (error) throw Error ("Ha ocurrido un error durante la autenticación con Google");
-    return data;
-};
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: 'http://localhost:5173/login',
+      },
+
+    });
+
+    if (data.url) {
+      redirect(data.url) // use the redirect API for your server framework
+    }
+  };
 
   const value = {
     user,
