@@ -77,7 +77,7 @@ const PrivacyPolicy = () => {
               <h2 className="text-xl font-semibold text-gray-900">Contáctanos</h2>
             </div>
             <p className="text-gray-700 leading-relaxed">
-              Si tienes alguna pregunta sobre esta Política de Privacidad, por favor contáctanos en privacy@yourblog.com.
+              Si tienes alguna pregunta sobre esta Política de Privacidad, por favor contáctanos en hensteve250@gmail.com.
             </p>
           </section>
         </div>

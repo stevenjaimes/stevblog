@@ -23,7 +23,7 @@ export const Header = () => {
   }
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-purple-600 to-blue-500 text-white shadow-lg">
+    <header className="sticky top-0 left-0 right-0 z-50 bg-gradient-to-r from-purple-600 to-blue-500 text-white shadow-lg">
       <div className="max-w-[2000px] mx-auto">
         <nav className="flex justify-between items-center h-16 px-6">
           <Link to="/" className="text-2xl font-bold tracking-tight hover:text-purple-100 transition-colors flex items-center">
