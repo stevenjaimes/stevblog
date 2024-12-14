@@ -1,17 +1,17 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { LoginForm } from '../components/auth/LoginForm';
+import { SocialLogin } from '../components/auth/SocialLogin';
+import { AuthError } from '../components/auth/AuthError';
 
 export const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { signIn, loginWithGoogle } = useAuth();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (email: string, password: string) => {
     setIsLoading(true);
     setError(null);
 
@@ -28,91 +28,45 @@ export const Login = () => {
 
   const handleGoogleLogin = async () => {
     try {
-        await loginWithGoogle();
-        // Redirigir o hacer algo después del inicio de sesión exitoso
-      } catch (error: unknown) {
-        if (error instanceof Error) {
-            console.error(error.message); // Now TypeScript knows 'error' is an instance of Error
-        } else {
-            console.error("An unknown error occurred");
-        }
+      await loginWithGoogle();
+      navigate('/admin');
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Error al iniciar sesión con Google');
     }
-  }
+  };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Iniciar Sesión
-        </h2>
-        <p className="mt-2 text-center text-sm text-gray-600">
-          ¿No tienes una cuenta?{' '}
-          <Link to="/signup" className="font-medium text-purple-600 hover:text-purple-500">
-            Regístrate aquí
-          </Link>
-        </p>
-      </div>
-
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          {error && (
-            <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-6">
-              <p className="text-red-700">{error}</p>
-            </div>
-          )}
-
-          <form className="space-y-6" onSubmit={handleSubmit}>
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                Correo electrónico
-              </label>
-              <div className="mt-1">
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-purple-500 focus:border-purple-500"
-                />
-              </div>
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-indigo-50">
+      <div className="container relative flex min-h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:px-0">
+        <div className="lg:p-8">
+          <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
+            <div className="flex flex-col space-y-2 text-center">
+              <h1 className="text-3xl font-semibold tracking-tight text-gray-900">
+                Bienvenido de nuevo
+              </h1>
+              <p className="text-sm text-gray-500">
+                Ingresa tus credenciales para acceder a tu cuenta
+              </p>
             </div>
 
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                Contraseña
-              </label>
-              <div className="mt-1">
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  autoComplete="current-password"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-purple-500 focus:border-purple-500"
-                />
-              </div>
+            <div className="grid gap-6">
+              {error && <AuthError message={error} />}
+              
+              <LoginForm onSubmit={handleSubmit} isLoading={isLoading} />
+              
+              <SocialLogin onGoogleLogin={handleGoogleLogin} />
             </div>
 
-            <div>
-              <button
-                type="submit"
-                disabled={isLoading}
-                className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white ${
-                  isLoading
-                    ? 'bg-purple-400 cursor-not-allowed'
-                    : 'bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500'
-                }`}
+            <p className="px-8 text-center text-sm text-gray-500">
+              ¿No tienes una cuenta?{' '}
+              <Link 
+                to="/signup" 
+                className="underline underline-offset-4 hover:text-gray-900"
               >
-                {isLoading ? 'Iniciando sesión...' : 'Iniciar sesión'}
-              </button>
-            </div>
-          </form>
-          <button onClick={handleGoogleLogin}>Iniciar sesión con Google</button>
+                Regístrate aquí
+              </Link>
+            </p>
+          </div>
         </div>
       </div>
     </div>

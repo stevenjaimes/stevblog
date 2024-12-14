@@ -10,7 +10,7 @@ interface AuthContextType {
   loading: boolean;
   signIn: (email: string, password: string) => Promise<{ error: AuthError | null }>;
   signOut: () => Promise<void>;
-  loginWithGoogle: () => Promise<void>;
+  loginWithGoogle: () => Promise<string | null>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -73,19 +73,28 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     await supabase.auth.signOut();
   };
 
-  const loginWithGoogle = async () => {
-    const { data } = await supabase.auth.signInWithOAuth({
+  const loginWithGoogle = async (): Promise<string | null> => {
+    // Iniciar el flujo de OAuth con Google
+    const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: 'http://localhost:5173/login',
+        redirectTo: 'http://localhost:5173',
       },
-
     });
-
-    if (data.url) {
-      redirect(data.url) // use the redirect API for your server framework
+  
+    if (error) {
+      console.error('Error during Google login:', error);
+      return null;
     }
-  };
+    console.log(data);
+
+    // Si la URL está presente, significa que debemos redirigir al usuario para completar la autenticación
+    if (data.url) {
+      redirect(data.url);  // Redirigir al usuario para que complete el flujo de autenticación con Google
+      return null;  // Retornar null ya que la autenticación aún no está completa
+    }
+    return data.provider ?? null; // Si no hay proveedor, retornar null
+  }
 
   const value = {
     user,
