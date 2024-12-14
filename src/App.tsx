@@ -13,6 +13,7 @@ import { AdminDashboard } from './pages/AdminDashboard';
 import './App.css';
 import ScrollToTop from './components/ScrollToTop';
 import PrivacyPolicy from './pages/PrivacyPolicy';
+import { PublicRoute } from './components/PublicRoute';
 
 function App() {
   return (
@@ -28,7 +29,13 @@ function App() {
               <Route path="/blog/categoria/:categorySlug" element={<Blog />} />
               <Route path="/about" element={<About />} />
               <Route path="/post/:id" element={<PostDetail />} />
-              <Route path="/login" element={<Login />} />
+              <Route path="/login" 
+                     element={
+                      <PublicRoute>
+                        <Login />
+                      </PublicRoute>
+                     } 
+                     />
               <Route path="/signup" element={<SignUp />} />
               <Route path="/privacypolicy" element ={<PrivacyPolicy />} />
               <Route

@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { UserDropdown } from '../components/UserDropDown';
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
-  const { user, isAdmin, signOut } = useAuth();
+  const { user, isAdmin } = useAuth();
 
   const isActiveRoute = (path: string) => {
     return location.pathname === path;
@@ -17,18 +18,9 @@ export const Header = () => {
     { path: '/about', label: 'Acerca de' }
   ];
 
-  // Si el usuario es admin, añadimos el enlace al panel de administración
   if (isAdmin) {
     navItems.push({ path: '/admin', label: 'Admin' });
   }
-
-  const handleSignOut = async () => {
-    try {
-      await signOut();
-    } catch (error) {
-      console.error('Error al cerrar sesión:', error);
-    }
-  };
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-purple-600 to-blue-500 text-white shadow-lg">
@@ -55,12 +47,7 @@ export const Header = () => {
             ))}
 
             {user ? (
-              <button
-                onClick={handleSignOut}
-                className="ml-4 px-4 py-2 rounded-lg bg-white/10 text-white hover:bg-white/20 transition-colors"
-              >
-                Cerrar Sesión
-              </button>
+              <UserDropdown />
             ) : (
               <Link
                 to="/login"
@@ -106,15 +93,7 @@ export const Header = () => {
               ))}
 
               {user ? (
-                <button
-                  onClick={() => {
-                    handleSignOut();
-                    setIsMenuOpen(false);
-                  }}
-                  className="block w-full text-left py-2 px-4 rounded-lg my-1 text-white/90 hover:bg-white/10 hover:text-white transition-colors"
-                >
-                  Cerrar Sesión
-                </button>
+                <UserDropdown />
               ) : (
                 <Link
                   to="/login"
