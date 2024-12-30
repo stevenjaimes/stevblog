@@ -13,7 +13,7 @@ export const HeroSection = () => {
         className="absolute top-0 left-0 min-w-full min-h-full w-auto h-auto object-cover z-0"
       >
         <source
-          src="https://cdn.pixabay.com/video/2016/09/21/5364-183788428_tiny.mp4"
+          src="https://res.cloudinary.com/dwbe8zbpn/video/upload/v1735595677/5364-183788428_tiny_wfv3q9.webm"
           type="video/mp4"
         />
           {/* Fallback image if video fails to load */}
