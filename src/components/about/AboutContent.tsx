@@ -41,7 +41,7 @@ export const AboutContent = () => {
               </ul>
             </div>
 
-            <div className="bg-gray-900 text-white p-8 rounded-xl">
+            <div className="about bg-gray-900 p-8 rounded-xl">
               <h3 className="text-2xl font-semibold mb-6">Conectemos</h3>
               <p className="mb-6">
                 ¿Tienes un proyecto interesante o simplemente quieres charlar sobre tecnología? 

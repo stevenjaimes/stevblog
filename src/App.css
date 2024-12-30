@@ -33,6 +33,14 @@
   @apply text-2xl font-semibold text-gray-800 mb-4; /* Tamaño de fuente aumentado */
 }
 
+.about h3{
+  @apply text-2xl font-semibold text-white mb-4; 
+}
+
+.about div>p{
+  @apply text-xl text-white mb-6 leading-relaxed;
+}
+
 .prose p {
   @apply text-xl text-gray-700 mb-6 leading-relaxed;
 }
