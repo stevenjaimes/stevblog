@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { Header } from './components/Header';
-import { Footer } from './components/Footer';
+import  Footer  from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
 import { PublicRoute } from './components/PublicRoute';
 import './App.css';
@@ -24,9 +24,9 @@ function App() : React.ReactElement {
       <Router>
         <div className="flex flex-col min-h-screen">
           <Header />
-          <main className="flex-grow">
-            <ScrollToTop />
-            {/* Suspense para cargar componentes de forma perezosa */}
+          <main className="flex-grow min-h-[calc(100vh-64px)]">
+            <ScrollToTop />            
+            
             <Suspense fallback={<div>Loading...</div>}>
               <Routes>
                 <Route path="/" element={<Home />} />

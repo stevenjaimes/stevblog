@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
-import logo from '../assets/logo.png';
+import logo from '../assets/logosvg.svg';
 
 
-export const Footer = () => {
+const Footer = (): React.ReactElement => {
   const currentYear = new Date().getFullYear();
 
   const socialLinks = [
@@ -129,3 +129,5 @@ export const Footer = () => {
     </footer>
   );
 };
+
+export default Footer;
