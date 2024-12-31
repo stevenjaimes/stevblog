@@ -5,7 +5,7 @@ import { Comments } from '../components/Comments';
 import ReactMarkdown from 'react-markdown';
 import { ArrowLeft, Clock, User, Calendar } from 'lucide-react';
 
-export const PostDetail = () => {
+const PostDetail = () => {
   const { id } = useParams<{ id: string }>();
   const { post, isLoading, error } = usePost(id || '');
   const { posts } = usePosts();
@@ -156,3 +156,5 @@ export const PostDetail = () => {
     </div>
   );
 };
+
+export default PostDetail;

@@ -5,7 +5,7 @@ import { Categories } from '../components/Categories';
 import { FeaturesSection } from '../components/home/FeaturesSection';
 import { NewsletterSection } from '../components/home/NewsletterSection';
 
-export const Home = () => {
+const Home = () => {
   const { posts, loading, error } = usePosts();
   const featuredPosts = posts.slice(0, 3);
 
@@ -48,3 +48,5 @@ export const Home = () => {
     </div>
   );
 };
+
+export default Home;

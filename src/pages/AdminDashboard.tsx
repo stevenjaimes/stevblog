@@ -4,7 +4,7 @@ import { useCategories } from '../hooks/useCategories'; // Importar el hook useC
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
 
-export const AdminDashboard = () => {
+const AdminDashboard = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [excerpt, setExcerpt] = useState('');
@@ -213,3 +213,5 @@ export const AdminDashboard = () => {
     </div>
   );
 };
+
+export default AdminDashboard;

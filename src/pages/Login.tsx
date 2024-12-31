@@ -5,7 +5,7 @@ import { LoginForm } from '../components/auth/LoginForm';
 import { SocialLogin } from '../components/auth/SocialLogin';
 import { AuthError } from '../components/auth/AuthError';
 
-export const Login = () => {
+const Login = () => {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
@@ -72,3 +72,5 @@ export const Login = () => {
     </div>
   );
 };
+
+export default Login;

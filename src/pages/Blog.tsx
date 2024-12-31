@@ -8,7 +8,7 @@ import { BlogGrid } from '../components/blog/BlogGrid';
 import { LoadingSpinner } from '../components/ui/LoadingSpinner';
 import { ErrorMessage } from '../components/ui/ErrorMessage';
 
-export const Blog = () => {
+const Blog = () => {
   const { categorySlug } = useParams();
   const { posts, loading: postsLoading, error: postsError } = usePosts();
   const { categories, loading: categoriesLoading, error: categoriesError } = useCategories();
@@ -57,3 +57,5 @@ export const Blog = () => {
     </div>
   );
 };
+
+export default Blog;
