@@ -9,8 +9,8 @@ interface BlogHeaderProps {
 export const BlogHeader = ({ searchQuery, onSearchChange }: BlogHeaderProps) => {
   return (
     <section className="relative w-full bg-gradient-to-br from-purple-600 via-purple-700 to-blue-800 text-white py-20 -mt-16">
-      <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1517694712202-14dd9538aa97')] bg-cover bg-center opacity-10"></div>
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-600/90 via-purple-700/90 to-blue-800/90"></div>
+      <div className="absolute inset-0 bg-[url('https://res.cloudinary.com/dwbe8zbpn/image/upload/v1735667510/programacion_ctpaoj.webp')] bg-cover bg-center opacity-10"></div>
+   
       
       <div className="container mx-auto px-4 relative">
         <div className="max-w-4xl mx-auto text-center">

@@ -18,7 +18,7 @@ export const HeroSection = () => {
         />
           {/* Fallback image if video fails to load */}
                 <img 
-          src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97"
+          src=""
           alt="Coding background"
           className="absolute inset-0 w-full h-full object-cover"
         />
